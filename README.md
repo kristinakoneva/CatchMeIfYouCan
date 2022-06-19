@@ -1,2 +1,1 @@
-# Catch Me If YouCan
-## Running Club
+# Catch Me If You Can - Runnung Club
