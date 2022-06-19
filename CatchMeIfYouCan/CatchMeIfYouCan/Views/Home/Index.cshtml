@@ -1,0 +1,44 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+<style>
+    .mySlides {
+        max-width: 100%;
+        max-height: 100%;
+    }
+    .body-content{
+        width:100%;
+    }
+    
+</style>
+
+<div class="jumbotron">
+    <h1 style="text-align: center">CATCH ME IF YOU CAN</h1>
+    <h2 style="text-align: center">Running Club</h2>
+</div>
+<div class="slide-show">
+    <img class="mySlides" src="~/Content/Photos/slide-show-1.jpg" />
+    <img class="mySlides" src="~/Content/Photos/slide-show-2.jpg" />
+    <img class="mySlides" src="~/Content/Photos/slide-show-3.jpg" />
+</div>
+
+
+@section Scripts{
+    <script>
+        var slideIndex = 0;
+        carousel();
+
+        function carousel() {
+            var i;
+            var x = document.getElementsByClassName("mySlides");
+            for (i = 0; i < x.length; i++) {
+                x[i].style.display = "none";
+            }
+            slideIndex++;
+            if (slideIndex > x.length) { slideIndex = 1 }
+            x[slideIndex - 1].style.display = "block";
+            setTimeout(carousel, 2000); // Change image every 2 seconds
+        }
+    </script>
+} 
+

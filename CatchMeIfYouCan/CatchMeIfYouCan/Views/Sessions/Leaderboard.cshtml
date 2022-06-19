@@ -1,0 +1,154 @@
+﻿@model IEnumerable<CatchMeIfYouCan.Models.Session>
+@{
+    ViewBag.Title = "Leaderboard";
+}
+<style>
+    .body-content {
+        width: 100%;
+        align-content: center;
+    }
+
+    .leaderboard-podium {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .podium {
+        background-color: black;
+        vertical-align: bottom;
+        width: 500px;
+        align-self: flex-end;
+        margin: 5px;
+    }
+
+        .podium:hover {
+            transform: scale(1.2);
+            background-color: black;
+        }
+
+    .first-place-rectangle {
+        height: 800px;
+        display: inline-block;
+    }
+
+    .second-place-rectangle {
+        height: 700px;
+        display: inline-block;
+    }
+
+    .third-place-rectangle {
+        height: 500px;
+        display: inline-block;
+    }
+
+    .podium-text {
+        color: white;
+        text-align: center;
+        font-size: 30px;
+        padding-top: 20px;
+        padding-bottom: 20px;
+    }
+
+    .medal {
+        width: 80%;
+        display: block;
+        margin: auto;
+    }
+</style>
+
+@{
+    string[] bestRunners = new string[3];
+    int[] longestDistances = new int[3];
+    int[] bestSessionsIds = new int[3];
+
+
+    longestDistances[0] = 0;
+    longestDistances[1] = 0;
+    longestDistances[2] = 0;
+    bestRunners[0] = "-";
+    bestRunners[1] = "-";
+    bestRunners[2] = "-";
+    foreach (var session in Model)
+    {
+        if (session.Distance > longestDistances[0])
+        {
+            longestDistances[0] = session.Distance;
+            bestRunners[0] = session.RunnerName;
+            bestSessionsIds[0] = session.Id;
+        }
+        else if (session.Distance > longestDistances[1] && session.Distance != longestDistances[0])
+        {
+            longestDistances[1] = session.Distance;
+            bestRunners[1] = session.RunnerName;
+            bestSessionsIds[1] = session.Id;
+        }
+        else if (session.Distance > longestDistances[2] && session.Distance != longestDistances[0] && session.Distance != longestDistances[1])
+        {
+            longestDistances[2] = session.Distance;
+            bestRunners[2] = session.RunnerName;
+            bestSessionsIds[2] = session.Id;
+        }
+    }
+
+
+}
+<h2 style="text-align:center; padding-bottom:50px">Leaderboard - Longest Running Distance</h2>
+@{
+    int sessionsCount = Model.ToList().Count;
+    if (sessionsCount < 3)
+    {
+        <p style="text-align:center">There is not enough data to display the leaderboard.</p>
+    }
+    else
+    {
+        <div class="leaderboard-podium">
+           
+                <div data-session-id="@bestSessionsIds[1]" class="podium second-place-rectangle">
+                    <p class="podium-text">@bestRunners[1] - @longestDistances[1] km</p>
+                    <img class="medal" src="~/Content/Photos/medal-second-place.png" />
+                </div>
+            
+           
+                <div data-session-id="@bestSessionsIds[0]" class="podium first-place-rectangle">
+                    <p class="podium-text">@bestRunners[0] - @longestDistances[0] km</p>
+                    <img class="medal" src="~/Content/Photos/medal-first-place.png" />
+                </div>
+          
+           
+                <div data-session-id="@bestSessionsIds[2]" class="podium third-place-rectangle">
+                    <p class="podium-text">@bestRunners[2] - @longestDistances[2] km</p>
+                    <img class="medal" src="~/Content/Photos/medal-third-place.png" />
+                </div>
+            
+        </div>
+    }
+
+
+
+}
+
+
+@section Scripts{
+    <script>
+
+
+        $(".podium").on("click", function () {
+            var session = $(this);
+
+            $.ajax({
+                url: "/Sessions/Details/" + session.attr("data-session-id"),
+                method: "POST",
+                success: function () {
+                    window.location = "/Sessions/Details/" + session.attr("data-session-id");
+                }
+            });
+
+        
+        });
+
+
+
+    </script>
+}
+
