@@ -3,57 +3,54 @@
 @{
     ViewBag.Title = "Session Details";
 }
+<style>
+    .details-text{
+        font-size: 20px;
+    }
+    dt, dd{
+        display:inline;
+    }
+    img{
+        width:10%;
+    }
+</style>
 
 <h2>Session Details</h2>
 
 <div>
-    <h4>Session</h4>
     <hr />
-    <dl class="dl-horizontal">
-
-
-
-
+    <dl class="details-text">
+        <img src="~/Content/Photos/details-runner.png" />     
         <dt>
-            @Html.DisplayNameFor(model => model.RunnerName)
+            @Html.DisplayNameFor(model => model.RunnerName):
         </dt>
 
         <dd>
             @Html.DisplayFor(model => model.RunnerName)
         </dd>
-
+        <br />
+        <img src="~/Content/Photos/details-distance.png" />     
         <dt>
-            @Html.DisplayNameFor(model => model.Distance)
+            @Html.DisplayNameFor(model => model.Distance):
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Distance)
+            @Html.DisplayFor(model => model.Distance) km
         </dd>
+        <br />
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Day)
-        </dt>
-
+        <img src="~/Content/Photos/details-date.png" />     
+        <dt>Date: </dt>
         <dd>
             @Html.DisplayFor(model => model.Day)
         </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Month)
-        </dt>
-
         <dd>
             @Html.DisplayFor(model => model.Month)
         </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Year)
-        </dt>
-
         <dd>
             @Html.DisplayFor(model => model.Year)
         </dd>
-
+        <br />
     </dl>
 </div>
 <p>
