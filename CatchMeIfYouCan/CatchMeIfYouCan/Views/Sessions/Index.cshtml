@@ -4,10 +4,31 @@
     ViewBag.Title = "Running Club";
 }
 
-<h2>Running Club</h2>
+<style>
+    .header-icon {
+        width: 7%;
+        margin-right: 30px;
+    }
+    .link-icon {
+        width: 3%;
+    }
+    hr {
+        margin-top: 0px;
+    }
+</style>
+
+
+<img class="header-icon" src="~/Content/Photos/icon-running-sessions.png" />
+<h2 style="display: inline-block">Running Club</h2>
+<hr />
 
 <p>
+    <img class="link-icon" src="~/Content/Photos/icon-new-session.png" />
     @Html.ActionLink("Add a new session", "Create")
+</p>
+<p style="margin-bottom: 30px">
+    <img class="link-icon" src="~/Content/Photos/icon-leaderboard.png" />
+    @Html.ActionLink("View leaderboard", "Leaderboard")
 </p>
 <table class="table" id="sessions-table">
     <thead>
