@@ -1,0 +1,181 @@
+﻿@model IEnumerable<CatchMeIfYouCan.Models.Session>
+
+@{
+    ViewBag.Title = "Personal Records";
+}
+<style>
+    .body-content {
+        width: 100%;
+        align-content: center;
+    }
+
+    .leaderboard-podium {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .podium {
+        background-color: black;
+        vertical-align: bottom;
+        width: 500px;
+        align-self: flex-end;
+        margin: 5px;
+    }
+
+        .podium:hover {
+            transform: scale(1.2);
+            background-color: black;
+        }
+
+    .first-place-rectangle {
+        height: 800px;
+        display: inline-block;
+    }
+
+    .second-place-rectangle {
+        height: 700px;
+        display: inline-block;
+    }
+
+    .third-place-rectangle {
+        height: 500px;
+        display: inline-block;
+    }
+
+    .podium-text {
+        color: white;
+        text-align: center;
+        font-size: 30px;
+        padding-top: 20px;
+        padding-bottom: 20px;
+    }
+
+    .medal {
+        width: 80%;
+        display: block;
+        margin: auto;
+    }
+</style>
+@{
+    int[] longestDistances = new int[3];
+    int[] bestSessionsIds = new int[3];
+    string[] bestDates = new string[3];
+    longestDistances[0] = 0;
+    longestDistances[1] = 0;
+    longestDistances[2] = 0;
+
+    foreach (var session in Model)
+    {
+        if (session.UserId == ViewBag.UserId)
+        {
+            if (session.Distance >= longestDistances[0])
+            {
+                if (session.Distance != longestDistances[0])
+                {
+                    // pushing the previous record sessions down the leaderboard
+                    int tempDistance = longestDistances[1];
+                    longestDistances[1] = longestDistances[0];
+                    longestDistances[2] = tempDistance;
+                    int tempId = bestSessionsIds[1];
+                    bestSessionsIds[1] = bestSessionsIds[0];
+                    bestSessionsIds[2] = tempId;
+                    string tempDate = bestDates[1];
+                    bestDates[1] = bestDates[0];
+                    bestDates[2] = tempDate;
+                }
+
+                // setting up the new record session
+                longestDistances[0] = session.Distance;
+                bestSessionsIds[0] = session.Id;
+                bestDates[0] = session.Day + " " + session.Month + " " + session.Year;
+            }
+            else if (session.Distance >= longestDistances[1] && session.Distance != longestDistances[0])
+            {
+                if (session.Distance != longestDistances[1])
+                {
+                    // pushing the previous record session down the leaderboard
+                    longestDistances[2] = longestDistances[1];
+                    bestSessionsIds[2] = bestSessionsIds[1];
+                    bestDates[2] = bestDates[1];
+                }
+
+                // setting up the new record session
+                longestDistances[1] = session.Distance;
+                bestSessionsIds[1] = session.Id;
+                bestDates[1] = session.Day + " " + session.Month + " " + session.Year;
+            }
+            else if (session.Distance >= longestDistances[2] && session.Distance != longestDistances[0] && session.Distance != longestDistances[1])
+            {
+                // setting up the new record session
+                longestDistances[2] = session.Distance;
+                bestSessionsIds[2] = session.Id;
+                bestDates[2] = session.Day + " " + session.Month + " " + session.Year;
+            }
+        }
+
+    }
+
+
+}
+
+<h2 style="text-align:center; padding-bottom:7px">Personal Records - @ViewBag.RunnerName</h2>
+
+<hr />
+@{
+
+    if (longestDistances[0] == 0 || longestDistances[1] == 0 || longestDistances[2] == 0)
+    {
+        <p style="text-align:center">There is not enough data to display the personal records.</p>
+    }
+    else
+    {
+        <div class="leaderboard-podium">
+
+            <div data-session-id="@bestSessionsIds[1]" class="podium second-place-rectangle">
+                <p class="podium-text">@bestDates[0] - @longestDistances[1] km</p>
+                <img class="medal" src="~/Content/Photos/medal-second-place.png" />
+            </div>
+
+
+            <div data-session-id="@bestSessionsIds[0]" class="podium first-place-rectangle">
+                <p class="podium-text">@bestDates[1] - @longestDistances[0] km</p>
+                <img class="medal" src="~/Content/Photos/medal-first-place.png" />
+            </div>
+
+
+            <div data-session-id="@bestSessionsIds[2]" class="podium third-place-rectangle">
+                <p class="podium-text">@bestDates[2] - @longestDistances[2] km</p>
+                <img class="medal" src="~/Content/Photos/medal-third-place.png" />
+            </div>
+
+        </div>
+    }
+
+
+
+}
+
+
+@section Scripts{
+    <script>
+
+
+        $(".podium").on("click", function () {
+            var session = $(this);
+
+            $.ajax({
+                url: "/Sessions/Details/" + session.attr("data-session-id"),
+                method: "POST",
+                success: function () {
+                    window.location = "/Sessions/Details/" + session.attr("data-session-id");
+                }
+            });
+
+
+        });
+
+
+
+    </script>
+}

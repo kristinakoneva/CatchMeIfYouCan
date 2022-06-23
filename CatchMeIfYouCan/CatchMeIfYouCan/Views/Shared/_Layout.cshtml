@@ -28,6 +28,10 @@
                     {
                         <li>@Html.ActionLink("Add Admin", "AddUserToRole", "Account")</li>
                     }
+                    @if (!User.IsInRole("Admin"))
+                    {
+                        <li>@Html.ActionLink("Personal Records", "PersonalRecords", "Sessions")</li>
+                    }
 
                 </ul>
                 @Html.Partial("_LoginPartial")

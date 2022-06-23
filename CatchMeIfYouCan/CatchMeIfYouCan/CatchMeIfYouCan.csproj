@@ -496,6 +496,7 @@
     <Content Include="Views\Sessions\Index.cshtml" />
     <Content Include="Views\Account\AddUserToRole.cshtml" />
     <Content Include="Views\Sessions\Leaderboard.cshtml" />
+    <Content Include="Views\Sessions\PersonalRecords.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

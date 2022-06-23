@@ -121,6 +121,15 @@ namespace CatchMeIfYouCan.Controllers
             return View(model);
         }
 
+        // PERSONAL RECORDS: Sessions/PersonalRecords 
+        public ActionResult PersonalRecords()
+        {
+            ViewBag.UserId = User.Identity.GetUserId();
+            ViewBag.RunnerName = db.Users.Find(User.Identity.GetUserId()).Name + " " + db.Users.Find(User.Identity.GetUserId()).Surname;
+            List<Session> model = db.Sessions.ToList();
+            return View(model);
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

@@ -71,37 +71,42 @@
     bestRunners[2] = "-";
     foreach (var session in Model)
     {
-        if (session.Distance > longestDistances[0])
+        if (session.Distance >= longestDistances[0])
         {
-            // pushing the previous record holders down the leaderboard
-            int tempDistance = longestDistances[1];
-            longestDistances[1] = longestDistances[0];
-            longestDistances[2] = tempDistance;
-            string tempName = bestRunners[1];
-            bestRunners[1] = bestRunners[0];
-            bestRunners[2] = tempName;
-            int tempId = bestSessionsIds[1];
-            bestSessionsIds[1] = bestSessionsIds[0];
-            bestSessionsIds[2] = tempId;
+            if (session.Distance != longestDistances[0]){
+                // pushing the previous record holders down the leaderboard
+                int tempDistance = longestDistances[1];
+                longestDistances[1] = longestDistances[0];
+                longestDistances[2] = tempDistance;
+                string tempName = bestRunners[1];
+                bestRunners[1] = bestRunners[0];
+                bestRunners[2] = tempName;
+                int tempId = bestSessionsIds[1];
+                bestSessionsIds[1] = bestSessionsIds[0];
+                bestSessionsIds[2] = tempId;
+            }
 
             // setting up the new record holder
             longestDistances[0] = session.Distance;
             bestRunners[0] = session.RunnerName;
             bestSessionsIds[0] = session.Id;
         }
-        else if (session.Distance > longestDistances[1] && session.Distance != longestDistances[0])
+        else if (session.Distance >= longestDistances[1] && session.Distance != longestDistances[0])
         {
-            // pushing the previous record holder down the leaderboard
-            longestDistances[2] = longestDistances[1];
-            bestRunners[2] = bestRunners[1];
-            bestSessionsIds[2] = bestSessionsIds[1];
+            if (session.Distance != longestDistances[1])
+            {
+                // pushing the previous record holder down the leaderboard
+                longestDistances[2] = longestDistances[1];
+                bestRunners[2] = bestRunners[1];
+                bestSessionsIds[2] = bestSessionsIds[1];
+            }
 
             // setting up the new record holder
             longestDistances[1] = session.Distance;
             bestRunners[1] = session.RunnerName;
             bestSessionsIds[1] = session.Id;
         }
-        else if (session.Distance > longestDistances[2] && session.Distance != longestDistances[0] && session.Distance != longestDistances[1])
+        else if (session.Distance >= longestDistances[2] && session.Distance != longestDistances[0] && session.Distance != longestDistances[1])
         {
             // setting up the new record holder
             longestDistances[2] = session.Distance;
@@ -114,12 +119,12 @@
 }
 
 
- <h2 style="text-align:center; padding-bottom:7px"">Leaderboard - Longest Running Distance</h2> 
+ <h2 style="text-align:center; padding-bottom:7px">Leaderboard - Longest Running Distance</h2> 
 
 <hr />
 @{
-    int sessionsCount = Model.ToList().Count;
-    if (sessionsCount < 3)
+    
+    if (longestDistances[0]==0 || longestDistances[1]==0 || longestDistances[2]==0)
     {
         <p style="text-align:center">There is not enough data to display the leaderboard.</p>
     }
