@@ -34,6 +34,7 @@ namespace CatchMeIfYouCan.Controllers
             {
                 return HttpNotFound();
             }
+            ViewBag.UserId = User.Identity.GetUserId();
             return View(session);
         }
 
